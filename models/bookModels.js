@@ -1,18 +1,25 @@
-const pg=require('pg')
-const dotenv = require('dotenv')
-dotenv.config();
 
+// const client = new pg.Client({
+//     user:process.env.user,
+//     host: process.env.host,
+//     database:process.env.client,
+//     password:process.env.password,
+//     port:process.env.port,
+// })
+// client.connect()
 
-const db = new pg.Client({
-    user:process.env.user,
-    host: process.env.host,
-    database:process.env.db,
-    password:process.env.password,
-    port:process.env.port,
-})
-db.connect()
+const { Client } = require('pg');
 
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false  // required for Render
+  }
+});
 
+client.connect()
+  .then(() => console.log("Connected to PostgreSQL"))
+  .catch(err => console.error("Connection error", err.stack));
 
 
 
@@ -20,7 +27,7 @@ db.connect()
 
 exports.getAllBooks=() => {
     return new Promise((resolve, reject) => {
-        db.query("Select * FROM library", (err,resp)=>{
+        client.query("Select * FROM library", (err,resp)=>{
             if(err){
                 console.error("Error executing query",err.stack);
                 reject(err);
@@ -35,7 +42,7 @@ exports.getAllBooks=() => {
 
 
 exports.getBooksbyId=(isbn) => {
-db.query(`SELECT * from library where isbn=${isbn}`, (err,resp)=>{
+client.query(`SELECT * from library where isbn=${isbn}`, (err,resp)=>{
     if(err){
         console.error("Error executing query",err.stack);
     }else{
@@ -50,7 +57,7 @@ db.query(`SELECT * from library where isbn=${isbn}`, (err,resp)=>{
 
 exports.editBooksbyId=(title,author,genre,availability,newIsbn,isbn)=>{
     return new Promise((resolve, reject) => {
-        db.query('UPDATE library SET title = COALESCE($1, title),author = COALESCE($2, author),genre = COALESCE($3, genre),availability = COALESCE($4, availability),isbn = COALESCE($5, isbn) WHERE isbn = $6',[title,author,genre,availability,newIsbn,isbn], (err,resp)=>{
+        client.query('UPDATE library SET title = COALESCE($1, title),author = COALESCE($2, author),genre = COALESCE($3, genre),availability = COALESCE($4, availability),isbn = COALESCE($5, isbn) WHERE isbn = $6',[title,author,genre,availability,newIsbn,isbn], (err,resp)=>{
             if(err){
                 console.error("Error executing query",err.stack);
             }else{
@@ -73,7 +80,7 @@ exports.deleteBooksbyId=(isbn)=>{
     return new Promise((resolve, reject) => {
         console.log(isbn)
 
-    db.query(`DELETE from library where isbn=$1`,[isbn], (err,resp)=>{
+    client.query(`DELETE from library where isbn=$1`,[isbn], (err,resp)=>{
         if(err){
             console.error("Error executing query",err.stack);
             reject(err);
@@ -95,7 +102,7 @@ exports.postBooks=(title, author, genre, availability, isbn)=>{
     return new Promise((resolve, reject) => {
 
 
-    db.query('INSERT into library (title, author, genre, availability, isbn) values($1,$2,$3,$4,$5)',[title,author,genre,availability,isbn], (err,resp)=>{
+    client.query('INSERT into library (title, author, genre, availability, isbn) values($1,$2,$3,$4,$5)',[title,author,genre,availability,isbn], (err,resp)=>{
         if(err){
             console.error("Error executing query",err.stack);
             reject(err);
