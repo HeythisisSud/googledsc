@@ -42,17 +42,16 @@ exports.getAllBooks=() => {
 
 
 exports.getBooksbyId=(isbn) => {
-client.query(`SELECT * from library where isbn=${isbn}`, (err,resp)=>{
+  return new Promise((resolve, reject) => {
+client.query('SELECT * from library where isbn=$1',[isbn], (err,resp)=>{
     if(err){
         console.error("Error executing query",err.stack);
     }else{
         const response=resp.rows
-        console.log(response)
-        
-        return response
+        resolve(response)
     }
   
-})}
+})})}
 
 
 exports.editBooksbyId=(title,author,genre,availability,newIsbn,isbn)=>{
@@ -64,7 +63,7 @@ exports.editBooksbyId=(title,author,genre,availability,newIsbn,isbn)=>{
                 const response={
                     Message:'Success'
                 }
-                res.json(response)
+                resolve(response)
             }
 
 
@@ -78,7 +77,7 @@ exports.editBooksbyId=(title,author,genre,availability,newIsbn,isbn)=>{
 
 exports.deleteBooksbyId=(isbn)=>{
     return new Promise((resolve, reject) => {
-        console.log(isbn)
+
 
     client.query(`DELETE from library where isbn=$1`,[isbn], (err,resp)=>{
         if(err){
