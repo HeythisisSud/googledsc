@@ -8,7 +8,7 @@ require('dotenv').config();
 //using basic auth to authorize the librarian
 
 app.use(basicAuth({
-    users: { process.env.USER: process.env.PASSWORD }, // 👈 change this to your credentials
+    users: { [process.env.USER]: process.env.PASSWORD }, // 👈 change this to your credentials
     challenge: true, // prompts browser popup
     unauthorizedResponse: (req) => 'Unauthorized'
 }));
