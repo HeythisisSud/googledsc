@@ -39,7 +39,7 @@ exports.getBooksbyId= async (req, res) => {
 
   exports.editBooksbyId= async (req,res)=>{
     try{
-        const response=await book.editBooksbyId({...req.body})
+        const response=await book.editBooksbyId(req.body.title,req.body.author,req.body.genre,req.body.availability,req.body.isbn)
         res.json(response)
 
 
