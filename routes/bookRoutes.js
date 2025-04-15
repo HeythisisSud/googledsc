@@ -4,10 +4,10 @@ const bookController=require('../controller/bookController.js')
 
 
 router.get('/', bookController.getAllBooks);
-router.get('/:id', bookController.getBooksbyId);
-router.patch('/:id', bookController.editBooksbyId);
-router.delete('/:id', bookController.deleteBooksbyId);
-router.patch('/:id', bookController.editBooksbyId);
+router.get('/:isbn', bookController.getBooksbyId);
+router.patch('/:isbn', bookController.editBooksbyId);
+router.delete('/:isbn', bookController.deleteBooksbyId);
+router.patch('/:isbn', bookController.editBooksbyId);
 router.post('/',bookController.postBooks)
 
 
