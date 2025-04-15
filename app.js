@@ -5,6 +5,8 @@ const app = express();
 const bookRoutes =require('./routes/bookRoutes.js')
 require('dotenv').config();
 
+//using basic auth to authorize the librarian
+
 app.use(basicAuth({
     users: { process.env.user: process.env.password }, // 👈 change this to your credentials
     challenge: true, // prompts browser popup
