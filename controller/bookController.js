@@ -1,6 +1,8 @@
 const book = require('../models/bookModels.js');
 
 
+//Controlling the response for all books
+
 exports.getAllBooks = async (req, res) => {
     try {
        const resp= await book.getAllBooks()
@@ -10,6 +12,9 @@ exports.getAllBooks = async (req, res) => {
       res.status(500).json({ message: "Error fetching posts" });
     }
   }
+
+
+//Controlling the response to get a book of specific id
 
 
 exports.getBooksbyId= async (req, res) => {
@@ -24,6 +29,10 @@ exports.getBooksbyId= async (req, res) => {
     }
   }
 
+
+//Controlling the response to posta book.
+
+
   exports.postBooks= async (req, res) => {
     try {
         
@@ -35,6 +44,9 @@ exports.getBooksbyId= async (req, res) => {
       res.status(500).json({ message: "Error operating posts" });
     }
   }
+
+
+//Controlling the response to edit a book of specific id
 
 
   exports.editBooksbyId= async (req,res)=>{
@@ -53,6 +65,9 @@ exports.getBooksbyId= async (req, res) => {
 
 
   }
+
+
+//Controlling the response to delete a book of specific id
 
 
 exports.deleteBooksbyId= async (req,res)=>{
