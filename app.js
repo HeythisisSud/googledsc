@@ -9,7 +9,7 @@ require('dotenv').config();
 
 app.use(basicAuth({
     users: { [process.env.USER]: process.env.PASSWORD },
-    challenge: true, // prompts browser popup
+    challenge: true, 
     unauthorizedResponse: (req) => 'Unauthorized'
 }));
 const port = process.env.PORT || 3000;
